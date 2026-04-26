@@ -18,7 +18,23 @@ for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
     
 uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+    # To read file as bytes:
+    bytes_data = uploaded_file.getvalue()
+    st.write(bytes_data)
 
+    # To convert to a string based IO:
+    stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+    st.write(stringio)
+
+    # To read file as string:
+    string_data = stringio.read()
+    st.write(string_data)
+
+    # Can be used wherever a "file-like" object is accepted:
+    dataframe = pd.read_csv(uploaded_file)
+    st.write(dataframe)
+    
 if prompt := st.chat_input():
     if not api_key:
         st.info("Invalid API key.")
@@ -27,7 +43,7 @@ if prompt := st.chat_input():
         api_key=api_key,
         base_url=base_url,
     )
-    st.session_state.messages.append({"role": "user", "content": prompt, "file": uploaded_file})
+    st.session_state.messages.append({"role": "user", "content": prompt, "file": string_data if uploaded_file is not None else None})
     st.chat_message("user").write(prompt)
     response = client.chat.completions.create(
         model=selected_model,
