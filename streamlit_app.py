@@ -20,7 +20,7 @@ for msg in st.session_state.messages:
     
 uploaded_file = st.file_uploader("Upload a PDF file", type=["pdf"], key="file_uploader")
 if uploaded_file is not None:
-    pdf_content = docloader.load_pdf(uploaded_file.name)
+    pdf_content = docloader.load_pdf(uploaded_file)
     st.write(pdf_content)
     
 if prompt := st.chat_input():
