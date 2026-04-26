@@ -1,10 +1,15 @@
 import os
 import fitz
 
-def load(file_path: str) -> str:
-    if not file_path.endswith(".pdf"):
-        raise ValueError("PDF files are not supported.")
-    doc = fitz.open(file_path)
+def load(file_path) -> str:
+    if isinstance(file_path, str):
+        if not file_path.endswith(".pdf"):
+            raise ValueError("Only PDF files are supported.")
+        doc = fitz.open(file_path)
+    else:
+        pdf_bytes = file_path.read()
+        doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+    
     text = ""
     for page in doc:
         text += page.get_text()
