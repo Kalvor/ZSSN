@@ -43,7 +43,7 @@ if prompt := st.chat_input():
         api_key=api_key,
         base_url=base_url,
     )
-    st.session_state.messages.append({"role": "user", "content": prompt, "file": string_data if uploaded_file is not None else None})
+    st.session_state.messages.append({"role": "user", "content": prompt, "file": dataframe if uploaded_file is not None else None})
     st.chat_message("user").write(prompt)
     response = client.chat.completions.create(
         model=selected_model,
