@@ -23,6 +23,7 @@ if prompt := st.chat_input():
         api_key=api_key,
         base_url=base_url,
     )
+    st.file_uploader("Upload a file to include in the conversation", key="file_uploader")
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
     response = client.chat.completions.create(
